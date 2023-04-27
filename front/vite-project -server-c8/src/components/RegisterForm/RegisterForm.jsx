@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { FORM_REGEX } from '../../utils/regex';
-// import { customAlert, messages } from '../../utils/alerts';
+import { customAlert, messages } from '../../utils/alerts';
 import { useNavigate } from 'react-router-dom';
-// import { endPoints } from '../../utils/configs';
-// import axios from 'axios';
+import { endPoints } from '../../utils/configs';
+import axios from 'axios';
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -18,7 +18,7 @@ const RegisterForm = () => {
 
   const { name, lastName, age, email, password, passwordCheck } = formData;
   const { EMAIL_REGEX, PASSWORD_REGEX, FULLNAME_REGEX } = FORM_REGEX;
-  // const URL_SERVER = import.meta.env.VITE_URL_SERVER;
+  const URL_SERVER = import.meta.env.VITE_URL_SERVER_C8;
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -50,36 +50,38 @@ const RegisterForm = () => {
 
     console.log(formData);
 
-    // try {
-    //   const response = await axios.post(
-    //     `${URL_SERVER}${endPoints.users}`,
-    //     formData
-    //   );
-    //   console.log(response);
-    //   customAlert(
-    //     messages.registerSuccessTitle,
-    //     messages.registerSuccessText,
-    //     messages.successIcon,
-    //     () => {
-    //       navigate('/');
-    //     }
-    //   );
-    // } catch (error) {
-    //   customAlert(
-    //     messages.registerFailureTitle,
-    //     messages.registerFailureText,
-    //     messages.errorIcon,
-    //     () => {
-    //       navigate('/error404');
-    //     }
-    //   );
-    // }
+    try {
+      const response = await axios.post(
+        `${URL_SERVER}${endPoints.users}/create-user`,
+        formData
+      );
+      
+      customAlert(
+        response.data,
+        messages.registerSuccessText,
+        messages.successIcon,
+        () => {
+          console.log(response);
+          //navigate('/');
+        }
+      );
+    } catch (error) {
+      customAlert(
+        messages.registerFailureTitle,
+        error.response.data.errors[0].msg,
+        messages.errorIcon,
+        () => {
+          console.log(error);
+          //navigate('/error404');
+        }
+      );
+    }
   };
 
   return (
     <Container className='vh-100'>
       <Row className='justify-content-center'>
-        <Col lg={4} className='mt-5'>
+        <Col md={6} lg={5} className='mt-5'>
           <Form
             className='p-3 border rounded shadow d-flex flex-column gap-3'
             onSubmit={handleSubmit}
@@ -108,7 +110,7 @@ const RegisterForm = () => {
 
             <Container fluid className='p-0'>
               <Row>
-                <Col lg={3}>
+                <Col  md={3}>
                   <Form.Group controlId='age'>
                     <Form.Label>Edad</Form.Label>
                     <Form.Control
@@ -120,7 +122,7 @@ const RegisterForm = () => {
                     />
                   </Form.Group>
                 </Col>
-                <Col lg={9}>
+                <Col md={9}>
                   <Form.Group controlId='email'>
                     <Form.Label>Email</Form.Label>
                     <Form.Control

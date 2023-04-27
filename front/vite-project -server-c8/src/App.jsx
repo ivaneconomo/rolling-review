@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import Product from './pages/Product';
 import AppLoader from './components/AppLoader/AppLoader';
 import Error404 from './pages/Error404';
-import RegisterForm from './components/RegisterForm/RegisterForm';
+import Register from './pages/Register';
 
 function App() {
   const isLog = true;
@@ -19,7 +19,7 @@ function App() {
           path='/product/:id'
           element={isLog ? <Product /> : <AppLoader />}
         />
-        <Route path='/register' element={<RegisterForm />} />
+        <Route path='/register' element={<Register />} />
       </Routes>
       <AppFooter />
     </>
